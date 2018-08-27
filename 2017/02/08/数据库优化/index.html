@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="wenqing" />
+
+
+
+<meta name="description" content="自己总结一些关于数据库优化的一些东西，没事的时候也可以查看一下；">
+<meta name="keywords" content="mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库优化">
+<meta property="og:url" content="http://yoursite.com/2017/02/08/数据库优化/index.html">
+<meta property="og:site_name" content="文清博客">
+<meta property="og:description" content="自己总结一些关于数据库优化的一些东西，没事的时候也可以查看一下；">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-27T06:51:25.370Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据库优化">
+<meta name="twitter:description" content="自己总结一些关于数据库优化的一些东西，没事的时候也可以查看一下；">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="文清博客" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>数据库优化 | 文清博客</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">wenqing</a></h1>
+        </hgroup>
+
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/laravel核心概念/">laravel核心概念</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lepus/">lepus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lnmp/">lnmp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lnmp优化/">lnmp优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx-discuz/">nginx discuz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-cookie/">php cookie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-php版本/">php php版本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-session/">php session</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/supervisor/">supervisor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-前段/">web 前段</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/websocket/">websocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前段/">前段</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安全/">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/导读-记忆/">导读 记忆</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/正则/">正则</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/版本测试/">版本测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟机/">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于前端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">wenqing</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">wenqing</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-数据库优化" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/02/08/数据库优化/" class="article-date">
+      <time datetime="2017-02-08T03:15:52.000Z" itemprop="datePublished">2017-02-08</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      数据库优化
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>自己总结一些关于数据库优化的一些东西，没事的时候也可以查看一下；<br><a id="more"></a></p>
+<p>#数据库的优化#</p>
+<h2 id="sql优化"><a href="#sql优化" class="headerlink" title="sql优化"></a>sql优化</h2><ol>
+<li>sql优化分析  </li>
+<li>索引优化</li>
+<li>常用sql优化</li>
+<li>常用优化技巧</li>
+</ol>
+<h2 id="数据库对象优化"><a href="#数据库对象优化" class="headerlink" title="数据库对象优化"></a>数据库对象优化</h2><ol>
+<li>优化表的数据结构</li>
+<li>表拆分</li>
+<li>逆规范式</li>
+<li>使用中间表</li>
+</ol>
+<h2 id="mysql服务器优化"><a href="#mysql服务器优化" class="headerlink" title="mysql服务器优化"></a>mysql服务器优化</h2><ol>
+<li>mysql内存管理优化</li>
+<li>log机制优化</li>
+<li>调整mysql并发相关参数</li>
+</ol>
+<h2 id="应用优化"><a href="#应用优化" class="headerlink" title="应用优化"></a>应用优化</h2><ol>
+<li>数据库连接池</li>
+<li>使用缓存减少压力</li>
+<li>负载均衡建立集群</li>
+<li>主主同步 主从同步  </li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p; //登录mysql服务器</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show status; //查看服务状态</span><br></pre></td></tr></table></figure>
+<h2 id="部分status参数说明"><a href="#部分status参数说明" class="headerlink" title="部分status参数说明"></a>部分status参数说明</h2><p>查询当前mysql本次启动后运行的时间<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show status like &quot;uptime&quot;;</span><br></pre></td></tr></table></figure></p>
+<p>查询当前mysql本次启动执行select的次数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show status like &quot;com_select&quot;;</span><br></pre></td></tr></table></figure></p>
+<p>查询当前mysql本次启动执行update的次数 delete create都是类似的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show status like &quot;com_update&quot;;</span><br></pre></td></tr></table></figure></p>
+<p>查询mysql服务器线程信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show status like &quot;Thread_%&quot;;</span><br></pre></td></tr></table></figure></p>
+<p>查询是图连接mysql服务器的数量，不管成功与否<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show status like &quot;connections&quot;;</span><br></pre></td></tr></table></figure></p>
+<p>查询是图连接mysql服务器的数量，不管成功与否<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show status like &quot;connections&quot;;</span><br></pre></td></tr></table></figure></p>
+<p>看创建用来处理连接的线程数。如果Threads_created较大，你可能要增加thread_cache_size值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show status like &quot;threads_created&quot;;</span><br></pre></td></tr></table></figure></p>
+<p>查看立即获得的表的锁的次数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show status like &quot;table_locks_immediate&quot;;</span><br></pre></td></tr></table></figure></p>
+<p>查看不能立即获得的表的锁的次数。如果该值较高，并且有性能问题，你应首先优化查询，然后拆分表或使用复制。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show status like &quot;table_locks_waited&quot;;</span><br></pre></td></tr></table></figure></p>
+<p>查看创建时间超过slow_launch_time秒的线程数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show status like &quot;slow_launch_threads&quot;;</span><br></pre></td></tr></table></figure></p>
+<p>查看查询时间超过long_query_time秒的查询的个数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show status like &quot;slow_queries&quot;;</span><br></pre></td></tr></table></figure></p>
+<p>##命令操作##<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show processlist //查看连接的进程数</span><br></pre></td></tr></table></figure></p>
+<p>##分析执行的sql语句##<br>1.explain<br>2.desc<br>3.select_type</p>
+<p>###desc###<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">desc select * from blog;</span><br></pre></td></tr></table></figure></p>
+<p>简单分析一下扫描值的含义  </p>
+<p>select_type   </p>
+<ol>
+<li>simple 简单表，不使用表连接或字查询。  </li>
+<li>primary 主查询，即外层查询。</li>
+<li>union union在的第二个或者后面的查询语句</li>
+<li>subquery 子查询的第一个select</li>
+</ol>
+<p>type</p>
+<ol>
+<li>all 全表扫描</li>
+<li>index 索引全扫描</li>
+<li>range 索引范围扫描</li>
+<li>ref 使用非唯一索引或唯一索引的前缀扫描</li>
+<li>eq_ref 类似ref，使用索引是唯一索引</li>
+<li>const/system 单表中最多有一个匹配行</li>
+<li>null 不使访问表或者索引，直接获得了结果 效率最高的就是null &gt; const/system &gt; all</li>
+</ol>
+<p>###show profile###<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select @@have_profiling; //查看数据是否支持 show profile</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select @@profiling; //是否开始 show profile</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set profiling = 1; //如果没有开启，开启profiling</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show profiles; //查看profiles</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show profile for query 2; //查看query_id为2的详情信息</span><br></pre></td></tr></table></figure>
+<p>##mysql索引优化##</p>
+<p>索引的查看  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show index from table_name;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show key from table_name;</span><br></pre></td></tr></table></figure>
+<p>####b-tree索引####<br>最常见的索引类型，大部分的都支持</p>
+<p>####hash索引#####<br>只有memory引擎支持，使用场景单一</p>
+<p>####r-tree索引####<br>myisam的一个特殊的索引，空间索引主要是地理空间类型的数据</p>
+<p>####full-text全文索引####<br>myisam的一个特殊的索引，Innodb从5.6开始支持</p>
+<p>###索引创建###</p>
+<ol>
+<li>primary key 主键索引</li>
+<li>unique key 唯一索引</li>
+<li>index key 不同索引</li>
+<li>全文索引</li>
+<li>联合索引</li>
+</ol>
+<p>##mysql中使用索引的方法##</p>
+<ol>
+<li><p>匹配全值  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">desc select id,title,class_id from blog where id = 1 and class_id = 2;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>匹配值范围查询 大于小于  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">desc select id,title,class_id from id &gt; 10 and class_id &gt; 10;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>匹配最左前缀 联合索引的时候使用</p>
+</li>
+<li>仅仅对索引进行查询 不要使用*进行查询</li>
+<li><p>匹配列前缀  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">desc select title from blog where title like &apos;news%&apos;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>部分精确+部分范围  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">desc select id,title,class_id from id &gt; 10 and class_id = 10;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>##不能使用索引的情况##</p>
+<ol>
+<li>以%开头的like查询</li>
+<li>数据类型出现隐式转换  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">select title from blog where id = &quot;3&quot;; //id是int类型的，这里带有了引号，类型转换了</span><br><span class="line">```  </span><br><span class="line">3. 符合查询的条件不包含最左部分</span><br><span class="line">4. 即使使用索引但比全表扫描还慢</span><br><span class="line">5. 用or分隔开的条件</span><br><span class="line"></span><br><span class="line">经过自己测试发现int类型的数据并不会产生数据类型的隐式转换，对于索引是没有影响的；</span><br><span class="line">但是字段是字符型的时候就会有影响了，id char类型 id = 1 type=all，索引没有生效；</span><br><span class="line"></span><br><span class="line">##定期优化表##</span><br><span class="line">1. optimize table table_name; //这个应该只能myisam进行使用</span><br><span class="line">2. 对myisam和innodb有效</span><br><span class="line">3. 合并表空间随便，消息空间浪费</span><br><span class="line"></span><br><span class="line">默认情况下对innodb使用optimize会有错误的提示；  </span><br><span class="line">Table does not support optimize, doing recreate + analyze instead  </span><br><span class="line">这个时候可以mysqld --skip-new 或者 mysqld --safe-mod 命令重启mysql 以便让其他引擎支持optimize</span><br><span class="line"></span><br><span class="line">##查询优化##</span><br><span class="line"></span><br><span class="line">1. 查询的时候尽量避免全表扫描，首先考虑在where和orderby上建立索引</span><br><span class="line">2. 尽量避免在where中使用!= &lt;&gt; 操作符，一般会放弃使用索引进行全表扫描</span><br><span class="line">3. 尽量避免where字句中使用or连接条件，否则引擎放弃使用索引，进行全表扫描</span><br><span class="line">4. 乱用%导致全表扫描</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>desc select title from blog where match(title) agninst(“test”); //全文索引的使用，不支持中文一般不怎么使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">5. 尽量避免在where语句中使用表达式，引擎会放弃使用索引</span><br></pre></td></tr></table></figure></p>
+<p>desc select title from blog where id/2 = 4; //没有使用索引<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">desc select title from blog where id = 8; //使用索引</span><br></pre></td></tr></table></figure></p>
+<ol start="6">
+<li>应当避免在where字句中使用函数进行操作</li>
+</ol>
+<p>##常用优化##</p>
+<ol>
+<li>优化嵌套查询，子查询可能需要在内存建立临时表，而关联查询不用建立临时表<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select title from blog where class_id in (select id from class); //内存中建立了临时表</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select title from blog as b left join class as c on n.class_id = c.id</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>不要使用select * 这种查询形式</li>
+<li>组和索引，最左原则</li>
+<li>很多时候使用 exists 代替 in 是一个好的选择 ； 区别不大</li>
+<li>当索引中有大量的重复数据时，索引可能不会生效; type = 1 //测试发现2条重复的时候就不会使用索引了，这个时候不建立索引更好些</li>
+</ol>
+<p>##数据库对象的优化##<br>procedure analyse()对当前应用进行分析，它会给出优化方案，用户可以自己选择是否进行优化，还是有些用处的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from blog procedure analyse();</span><br></pre></td></tr></table></figure></p>
+<p>##表拆分##</p>
+<ol>
+<li>垂直拆分 字段多 拆分为两个表，主键id是相同的</li>
+<li>水平拆分 数据多<br> a. 表很大<br> b. 表中的数据有独立性<br> c. 需要把表存在多种介质<br>##使用中间表##</li>
+<li>数据查询量大</li>
+<li>数据统计，数据分析</li>
+</ol>
+<p>##关于表引擎的命令##</p>
+<ol>
+<li><p>查看存储引擎</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show engines;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看默认的存储引擎</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show variables like &apos;%storage_engine&apos;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看某一个表的具体引擎</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show create table tablename;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show table status from blog where name = &apos;test&apos;;</span><br></pre></td></tr></table></figure>
+<p>##innodb引擎##</p>
+<ol>
+<li>提供事务回滚，崩溃修复以及多版本并发的事务安全操作</li>
+<li>支持自增长列 auto_increment</li>
+<li>支持外键</li>
+<li>支持事务以及事务关联操作</li>
+<li>支持mvcc行锁<br>##myisam##</li>
+<li>不支持事务和行级锁，只支持并发插入的表锁，主要用户高负载的select</li>
+<li>三种类型存储结构； 静态型 动态型 压缩型</li>
+</ol>
+<p>##myisam内存优化##</p>
+<ol>
+<li><p>key_buffer_size<br>决定缓存区的大小，直接影响myisam表的存取效率，建议四分之一的内存；  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show variables like &quot;%key%&quot;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>read_buffer 读缓存</p>
+</li>
+<li>write_buffer 写缓存  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/my.cnf</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>##innodb内存优化##</p>
+<ol>
+<li>innodb_buffer_pool_size //存储引擎和索引数据的最大缓冲区大小 50%-80% 数据库服务器的话</li>
+<li>innodb_old_blocks_pct LRU 决定old sublist的比例</li>
+<li>innodb_old_blocks_time LRU 数据转移的间隔时间<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show variables like &quot;%old_blocks%&quot;;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>##mysql并发相关参数##</p>
+<ol>
+<li><p>max_connections 控制mysql的最大连接数 默认151 如果 connection_errors_max_connections不为0且一直增加，考虑调整</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show variables like &quot;%_connections%&quot;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>back_log 如果需要数据库短时间内大量的链接，可以考虑适当增大这个值</p>
+</li>
+<li>table_option_cache 控制sql执行线程打开的缓存的数量，这个参数应该根据最大连接数max_connections以及每个关联查询所中所涉及的最大个数决定</li>
+<li>thread_cache_size 控制mysql缓存客户端线程数量，加快数据库的连接速度。可以根据cacahe失效率threads_created/connections来衡量thread_cache_size是否合适</li>
+<li>innodb_lock_wait_timeout 控制innodb事务等待行锁的时间，默认50ms</li>
+</ol>
+<p>##数据库主从复制以及读写分离的配置##</p>
+<p>101.201.221.41 master主服务器<br>101.200.132.171 sliver从服务器  </p>
+<ol>
+<li>配置主库数据库参数<br>vim /etc/my.cnf<br>开启 log-bin=mysql-bin<br>server-id = 1<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysql restart; //重启mysql</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show master status; //进入数据库后，查看一下master</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>添加一个操作用户并且授权  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CREATE USER &apos;fuzhi&apos;@&apos;%&apos; IDENTIFIED BY &apos;123456&apos;; //添加一个fuzhi的用户</span><br><span class="line">```</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>grant replication slave on <em>.</em> to ‘fuzhi‘@’101.200.132.171’ identified by ‘123456’; //添加授权<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">flush privileges; //刷新授权       </span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">3. 实际的环境可以先锁定一下表，最后再解除锁定</span><br></pre></td></tr></table></figure></p>
+<p>FLUSH TABLES WITH READ LOCK; //锁表 unlock tables; //解锁表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">4. 从库的配置修改</span><br><span class="line">导入主库的sql数据文件  </span><br><span class="line">vim /etc/my.cnf   </span><br><span class="line">开启 log-bin=mysql-bin  </span><br><span class="line">server-id = 3  </span><br><span class="line">重启数据库服务</span><br><span class="line"></span><br><span class="line">5. 在从库中链接主库的mysql</span><br></pre></td></tr></table></figure></p>
+<p>mysql -h101.201.221.41 -ufuzhi -p //测试一下主库连接是否成功<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">change master to master_host = &apos;101.201.221.41&apos;,master_user=&apos;fuzhi&apos;,master_password=&apos;123456&apos;,master_log_file=&apos;mysql-bin.000087&apos;,master_log_pos=120;</span><br><span class="line">```</span><br></pre></td></tr></table></figure></p>
+<p>start slave; show slave status;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">如果中间修改，先stop slave 然后重新运行 change；  </span><br><span class="line">这是不同版本间出现的checksum的问题，mysql5.6.5以后的版本中binlog_checksum=crc32,而低版本都是binlog_checksum=none  </span><br><span class="line">我们可以只在我们主库进行写操作，在从库进行读操作，这样就可以实现读写分离了；</span><br><span class="line"></span><br><span class="line">##主主复制##</span><br><span class="line">多个master可以避免一个数据库服务器出问题了，应用就不能运行的问题；  </span><br><span class="line">A</span><br></pre></td></tr></table></figure></p>
+<p>CREATE USER ‘fuzhi‘@’%’ IDENTIFIED BY ‘123456’; //添加一个fuzhi的用户<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">grant replication slave on *.* to &apos;fuzhi&apos;@&apos;101.200.132.171&apos; identified by &apos;123456&apos;; //添加授权 </span><br><span class="line">```</span><br></pre></td></tr></table></figure></p>
+<p>flush privileges; //刷新授权<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">B</span><br></pre></td></tr></table></figure></p>
+<p>CREATE USER ‘fuzhi‘@’%’ IDENTIFIED BY ‘123456’; //添加一个fuzhi的用户<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">grant replication slave on *.* to &apos;fuzhi&apos;@&apos;10.0.0.11&apos; identified by &apos;123456&apos;; //添加授权 </span><br><span class="line">```</span><br></pre></td></tr></table></figure></p>
+<p>flush privileges; //刷新授权<br><code>`</code>  </p>
+<pre><code>
+//A服务器修改的内容
+vim /etc/my.cnf
+log-bin = mysql-bin
+server-id = 1
+binlog-do-db = fafu_platform //同步的数据库
+binlog-ignore-db = mysql //忽略数据库1
+binlog-ignore-db = test //忽略数据库2
+slave-skip-errors = all
+auto_increment_increment = 2
+auto_increment_offset = 1
+</code></pre>
+
+<pre><code>
+flush tables with read lock;
+show master status\G;
+change master to master_host = '192.168.193.131',master_user='master',master_password='123456',master_log_file='mysql-bin.000002',master_log_pos=615;
+</code></pre>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/02/08/数据库优化/">数据库优化</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">wenqing</a></p>
+        <p><span>发布时间:</span>2017-02-08, 11:15:52</p>
+        <p><span>最后更新:</span>2018-08-27, 14:51:25</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/02/08/数据库优化/" title="数据库优化">http://yoursite.com/2017/02/08/数据库优化/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/02/08/数据库优化/　　作者: wenqing" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/02/13/php相关/">
+                    php相关
+                </a>
+            </div>
+        
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sql优化"><span class="toc-number">1.</span> <span class="toc-text">sql优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据库对象优化"><span class="toc-number">2.</span> <span class="toc-text">数据库对象优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mysql服务器优化"><span class="toc-number">3.</span> <span class="toc-text">mysql服务器优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用优化"><span class="toc-number">4.</span> <span class="toc-text">应用优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#部分status参数说明"><span class="toc-number">5.</span> <span class="toc-text">部分status参数说明</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"数据库优化　| 文清博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/02/13/php相关/" title="上一篇: php相关">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/08/27/apt流程/">apt流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/17/导读/">导读</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/16/leplus部署/">虚拟机配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/16/linux学习总结/">linux学习总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/15/php测试/">php版本测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/07/laravel核心/">laravel核心</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/linux常用/">linux常用命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/php面试题/">php面试zol</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/php面试总结答案篇/">php</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/17/nginx/">ngixn配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/17/lnmp优化/">lnmp优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/07/lnmp编译安装步骤/">lnmp的编译安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/php常用函数/">php常用函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/php设计模式/">php设计模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/laravel/">laravel核心概念</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/php中的几个概念/">php中的几个概念</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/php魔术函数/">php魔术方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/HTTP协议/">http协议</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/websocket协议/">websocket协议</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/help_function/">help_function</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/自动加载/">自动加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/14/xss和csrf/">xss和csrf</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/14/sql注入/">sql注入</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/正则的使用/">正则的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/discuz-ngixn配置/">discuz_ngixn配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/正则基础总结/">正则基础总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/session总结/">session总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/cookie总结/">cookie总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/前段自动化介绍和安装/">前段自动化介绍和安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/supervisor使用/">supervisor使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/手机web开发注意/">手机web开发注意</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/lnmp安装配置相关/">lnmp安装配置相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/前段自动化/">前段自动化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/16/虚拟机配置/">虚拟机配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/13/php相关/">php相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/数据库优化/">数据库优化</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 wenqing
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

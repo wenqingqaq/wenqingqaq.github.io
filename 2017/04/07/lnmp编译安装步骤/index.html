@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="wenqing" />
+
+
+
+<meta name="description" content="记录一下lnmp的安装步骤，以及扩展安装">
+<meta name="keywords" content="lnmp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="lnmp的编译安装">
+<meta property="og:url" content="http://yoursite.com/2017/04/07/lnmp编译安装步骤/index.html">
+<meta property="og:site_name" content="文清博客">
+<meta property="og:description" content="记录一下lnmp的安装步骤，以及扩展安装">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://omsnlkyep.bkt.clouddn.com/N%60%25%25HK%7DJSSEB%29%25IY%28DRFLO4.png">
+<meta property="og:image" content="http://omsnlkyep.bkt.clouddn.com/11.png">
+<meta property="og:updated_time" content="2018-08-27T06:51:25.363Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="lnmp的编译安装">
+<meta name="twitter:description" content="记录一下lnmp的安装步骤，以及扩展安装">
+<meta name="twitter:image" content="http://omsnlkyep.bkt.clouddn.com/N%60%25%25HK%7DJSSEB%29%25IY%28DRFLO4.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="文清博客" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>lnmp的编译安装 | 文清博客</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">wenqing</a></h1>
+        </hgroup>
+
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/laravel核心概念/">laravel核心概念</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lepus/">lepus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lnmp/">lnmp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lnmp优化/">lnmp优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx-discuz/">nginx discuz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-cookie/">php cookie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-php版本/">php php版本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-session/">php session</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/supervisor/">supervisor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-前段/">web 前段</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/websocket/">websocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前段/">前段</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安全/">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/导读-记忆/">导读 记忆</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/正则/">正则</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/版本测试/">版本测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟机/">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于前端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">wenqing</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">wenqing</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-lnmp编译安装步骤" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/04/07/lnmp编译安装步骤/" class="article-date">
+      <time datetime="2017-04-07T06:06:13.000Z" itemprop="datePublished">2017-04-07</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      lnmp的编译安装
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lnmp/">lnmp</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>记录一下lnmp的安装步骤，以及扩展安装<br><a id="more"></a></p>
+<p>lnmp的编译安装步骤</p>
+<h3 id="nginx模块安装"><a href="#nginx模块安装" class="headerlink" title="nginx模块安装"></a>nginx模块安装</h3><p>不同于apache扩展的安装，nginx每一次安装都是重新编译一次</p>
+<ol>
+<li>下载所需要的安装包，我这里使用的是ngx_http_consistent_hash nginx扩展包<br><a href="https://github.com/replay/ngx_http_consistent_hash" target="_blank" rel="noopener">https://github.com/replay/ngx_http_consistent_hash</a><br>下载到服务器上，然后解压<br><img src="http://omsnlkyep.bkt.clouddn.com/N%60%25%25HK%7DJSSEB%29%25IY%28DRFLO4.png" alt=""></li>
+<li><p>进入nginx安装包目录，下面是nginx的安装包目录。我是用的lnmp1.3的安装包<br><img src="http://omsnlkyep.bkt.clouddn.com/11.png" alt=""><br>查看一下以前的编译情况</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/nginx/sbin/nginx -V;</span><br><span class="line"><span class="attribute">nginx</span> version: nginx/<span class="number">1</span>.<span class="number">10</span>.<span class="number">0</span></span><br><span class="line">built by gcc <span class="number">6</span>.<span class="number">2</span>.<span class="number">0</span> <span class="number">20161005</span> (Ubuntu <span class="number">6</span>.<span class="number">2</span>.<span class="number">0</span>-5ubuntu12) </span><br><span class="line">built with OpenSSL <span class="number">1</span>.<span class="number">0</span>.<span class="number">2g</span>  <span class="number">1</span> Mar <span class="number">2016</span></span><br><span class="line">TLS SNI support enabled</span><br><span class="line">configure arguments: --user=www --group=www --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module --with-http_gzip_static_module --with-ipv6 --add-module=/root/ngx_http_consistent_hash-master/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装第三方模块</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./configure --user=www --group=www --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module --with-http_gzip_static_module --with-ipv6 --add-module=/root/ngx_http_consistent_hash-master/  </span><br><span class="line"><span class="attribute">make</span> &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>安装memcache服务端<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">http://memcached.org/downloads 官网下载稳定版</span><br><span class="line">wget http://memcached.org/latest</span><br><span class="line">tar -zxvf memcached-1.x.x.tar.gz</span><br><span class="line">cd memcached-1.x.x</span><br><span class="line">./configure &amp;&amp; make &amp;&amp; make test &amp;&amp; sudo make install</span><br><span class="line"></span><br><span class="line">/usr/local/memcached/bin/memcached -p 11211 -u nobody -m 64m -vv //启动</span><br><span class="line"></span><br><span class="line">$memcache = new Memcache;             //创建一个memcache对象</span><br><span class="line">$memcache-&gt;connect(&apos;localhost&apos;, 11211) or die (&quot;Could not connect&quot;); //连接Memcached服务器</span><br><span class="line">$memcache-&gt;set(&apos;key&apos;, &apos;test&apos;);        //设置一个变量到内存中，名称是key 值是test</span><br><span class="line">$get_value = $memcache-&gt;get(&apos;key&apos;);   //从内存中取出key的值</span><br><span class="line">echo $get_value;</span><br></pre></td></tr></table></figure></p>
+<p>安装php的memcache扩展<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">https://pecl.php.net/ 官方模块下载地址搜索 memcache</span><br><span class="line">cd 扩展目录;</span><br><span class="line">/usr/local/php/bin/phpize --with-php-config=/usr/local/php/bin/php-config //生成 ./configure </span><br><span class="line">./configure --with-php-config=/usr/local/php/bin/php-config </span><br><span class="line">make &amp;&amp; make install //提示安装成功 /usr/local/php/lib/php/extensions/no-debug-non-zts-20100525/ 安装目录</span><br><span class="line">php.ini 添加一条扩展</span><br><span class="line">extension=/usr/local/php/lib/php/extensions/no-debug-non-zts-20100525/memcache.so</span><br></pre></td></tr></table></figure></p>
+<p>安装apache<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">官网下载apache稳定版</span><br><span class="line">#chmod 755 httpd-2.0.54.tar.gz   (说明:给予更多的权限)</span><br><span class="line"></span><br><span class="line">#./configure --prefix=/usr/local/apache --enable-module=most --enable-shared=max</span><br><span class="line">(说明:配置Apache。这里我把默认可以生成的&quot;httpd&quot;改成了&quot;apache&quot;的目录,目的为了便于查找)</span><br><span class="line">#make   (说明:编译Apache)</span><br><span class="line">#make install  (说明:安装Apache)</span><br><span class="line">#/usr/local/apache/bin/apachectl start   (说明:启动Apache服务，看Apache服务是否可以正常启动)</span><br><span class="line">如果启动出这个问题：httpd: Could not reliably determine the server&apos;s fully qualified domain name</span><br><span class="line">，可以用记事本打开httpd.conf，将里面的#ServerName localhost:80注释去掉即可，再执行httpd</span><br><span class="line">#/usr/local/apache/bin/apachectl stop    (说明:停止Apache服务，看Apache服务是否可以正常关闭)</span><br><span class="line">常用的工具都放在其安装目录的bin目录下：</span><br></pre></td></tr></table></figure></p>
+<p>php安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">下载php源文件可以直接在 www.php.net官网进行下载</span><br><span class="line">//apache使用的</span><br><span class="line">./configure  --prefix=/usr/local/fastphp --with-mysql=mysqlnd --enable-mysqlnd --with-gd --enable-gd-native-ttf --enable-gd-jis-conv --with-apxs2=/usr/local/apache2.2/bin/apxs</span><br><span class="line"></span><br><span class="line">//nginx使用的</span><br><span class="line">./configure  --prefix=/usr/local/fastphp --with-mysql=mysqlnd --enable-mysqlnd --with-gd --enable-gd-native-ttf --enable-gd-jis-conv --enable-fpm</span><br><span class="line"></span><br><span class="line">make &amp;&amp; make install //有时候可能会出错，使用下面的安装</span><br><span class="line">make ZEND_EXTRA_LIBS=&apos;-liconv&apos; &amp;&amp; make install</span><br><span class="line">cp php.ini-development /usr/local/fastphp/lib/php.ini //复制一份php.ini文件</span><br><span class="line"></span><br><span class="line">修改apache下面的httpd.config文件</span><br><span class="line">LoadModule php5_module modules/libphp5.so  这项配置Apache有可能已经在配置文件中配置好了，如果没有则自己添加上去</span><br><span class="line">AddType application/x-httpd-php .php</span><br><span class="line"></span><br><span class="line"> /usr/local/apache/bin/apachectl restart //重新启动apache 测试php程序是否执行了</span><br></pre></td></tr></table></figure></p>
+<p>mysql安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">groupadd mysql                增加mysql用户组</span><br><span class="line">useradd -g mysql -s /bin/false -M mysql  建立属于mysql组的mysql用户，且不允许登陆系统</span><br><span class="line">然后把mysql安装路径，文件拥有者及拥有组改为mysql</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/04/07/lnmp编译安装步骤/">lnmp的编译安装</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">wenqing</a></p>
+        <p><span>发布时间:</span>2017-04-07, 14:06:13</p>
+        <p><span>最后更新:</span>2018-08-27, 14:51:25</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/04/07/lnmp编译安装步骤/" title="lnmp的编译安装">http://yoursite.com/2017/04/07/lnmp编译安装步骤/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/04/07/lnmp编译安装步骤/　　作者: wenqing" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/04/17/lnmp优化/">
+                    lnmp优化
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/03/24/php常用函数/">
+                    php常用函数
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx模块安装"><span class="toc-number">1.</span> <span class="toc-text">nginx模块安装</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"lnmp的编译安装　| 文清博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/04/17/lnmp优化/" title="上一篇: lnmp优化">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/03/24/php常用函数/" title="下一篇: php常用函数">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/08/27/apt流程/">apt流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/17/导读/">导读</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/16/leplus部署/">虚拟机配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/16/linux学习总结/">linux学习总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/15/php测试/">php版本测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/07/laravel核心/">laravel核心</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/linux常用/">linux常用命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/php面试题/">php面试zol</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/php面试总结答案篇/">php</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/17/nginx/">ngixn配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/17/lnmp优化/">lnmp优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/07/lnmp编译安装步骤/">lnmp的编译安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/php常用函数/">php常用函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/php设计模式/">php设计模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/laravel/">laravel核心概念</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/php中的几个概念/">php中的几个概念</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/php魔术函数/">php魔术方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/HTTP协议/">http协议</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/websocket协议/">websocket协议</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/help_function/">help_function</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/自动加载/">自动加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/14/xss和csrf/">xss和csrf</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/14/sql注入/">sql注入</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/正则的使用/">正则的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/discuz-ngixn配置/">discuz_ngixn配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/正则基础总结/">正则基础总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/session总结/">session总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/cookie总结/">cookie总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/前段自动化介绍和安装/">前段自动化介绍和安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/supervisor使用/">supervisor使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/手机web开发注意/">手机web开发注意</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/lnmp安装配置相关/">lnmp安装配置相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/前段自动化/">前段自动化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/16/虚拟机配置/">虚拟机配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/13/php相关/">php相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/数据库优化/">数据库优化</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 wenqing
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

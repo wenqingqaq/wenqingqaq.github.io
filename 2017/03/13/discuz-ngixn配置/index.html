@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="wenqing" />
+
+
+
+<meta name="description" content="记录一下nginx下discuz的配置">
+<meta name="keywords" content="nginx discuz">
+<meta property="og:type" content="article">
+<meta property="og:title" content="discuz_ngixn配置">
+<meta property="og:url" content="http://yoursite.com/2017/03/13/discuz-ngixn配置/index.html">
+<meta property="og:site_name" content="文清博客">
+<meta property="og:description" content="记录一下nginx下discuz的配置">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-27T06:51:25.360Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="discuz_ngixn配置">
+<meta name="twitter:description" content="记录一下nginx下discuz的配置">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="文清博客" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>discuz_ngixn配置 | 文清博客</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">wenqing</a></h1>
+        </hgroup>
+
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/laravel核心概念/">laravel核心概念</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lepus/">lepus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lnmp/">lnmp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lnmp优化/">lnmp优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx-discuz/">nginx discuz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-cookie/">php cookie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-php版本/">php php版本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-session/">php session</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/supervisor/">supervisor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-前段/">web 前段</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/websocket/">websocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前段/">前段</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安全/">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/导读-记忆/">导读 记忆</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/正则/">正则</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/版本测试/">版本测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟机/">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于前端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">wenqing</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">wenqing</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-discuz-ngixn配置" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/03/13/discuz-ngixn配置/" class="article-date">
+      <time datetime="2017-03-13T06:06:41.000Z" itemprop="datePublished">2017-03-13</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      discuz_ngixn配置
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx-discuz/">nginx discuz</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>记录一下nginx下discuz的配置<br><a id="more"></a><br>vhost配置<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">        <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">        <span class="attribute">server_name</span> bbs.haotoufa.com;</span><br><span class="line">        <span class="attribute">index</span> index.html index.htm index.php;</span><br><span class="line">        <span class="attribute">root</span> /home/wwwroot/haotoufa/bbs;</span><br><span class="line">		error_page 404 /index.php; //设置404界面，可以使html或者其他界面，这里根据需求跳转到首页；这里不能添加./404.html会跳转为302的</span><br><span class="line">        <span class="attribute">location</span> <span class="regexp">~ .*\.(php|php5)?$</span></span><br><span class="line"><span class="regexp"></span>        &#123;</span><br><span class="line">                <span class="attribute">fastcgi_pass</span> unix:/tmp/php-cgi.sock;</span><br><span class="line">                <span class="comment">#fastcgi_pass 127.0.0.1:9000;</span></span><br><span class="line">                <span class="attribute">fastcgi_index</span> index.php;</span><br><span class="line">                <span class="attribute">include</span> fastcgi.conf;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="attribute">location</span> <span class="regexp">~ .*\.(gif|jpg|jpeg|png|bmp|swf)$</span></span><br><span class="line"><span class="regexp"></span>        &#123;</span><br><span class="line">                <span class="attribute">expires</span> <span class="number">30d</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="attribute">location</span> <span class="regexp">~ .*\.(js|css)?$</span></span><br><span class="line"><span class="regexp"></span>        &#123;</span><br><span class="line">                <span class="attribute">expires</span> <span class="number">1h</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="attribute">include</span> /usr/local/nginx/conf/discuzx.conf;</span><br><span class="line">        <span class="attribute">log_format</span> bbs <span class="string">'<span class="variable">$remote_addr</span> - <span class="variable">$remote_user</span> [<span class="variable">$time_local</span>] "<span class="variable">$request</span>"'</span></span><br><span class="line">                <span class="string">'<span class="variable">$status</span> <span class="variable">$body_bytes_sent</span> "<span class="variable">$http_referer</span>"'</span></span><br><span class="line">                <span class="string">'"<span class="variable">$http_user_agent</span>" "<span class="variable">$http_x_forwarded_for</span>"'</span>;</span><br><span class="line">        <span class="attribute">access_log</span> /home/wwwlogs/access_bbs.log bbs;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>discuz伪静态的一些配置，基本上就是前台的静态化<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/scoremall\.html$</span> <span class="variable">$1</span>/plugin.php?id=it618_scoremall:scoremall&amp;<span class="variable">$2</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/gwc\.html$</span> <span class="variable">$1</span>/plugin.php?id=it618_scoremall:gwc&amp;<span class="variable">$2</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/productlist\.html$</span> <span class="variable">$1</span>/plugin.php?id=it618_scoremall:scoremall_list&amp;<span class="variable">$2</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/uc\.html$</span> <span class="variable">$1</span>/plugin.php?id=it618_scoremall:scoremall_uc&amp;<span class="variable">$2</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/store\.html$</span> <span class="variable">$1</span>/plugin.php?id=it618_scoremall:scoremall_store&amp;<span class="variable">$2</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/storelist\.html$</span> <span class="variable">$1</span>/plugin.php?id=it618_scoremall:store_list&amp;<span class="variable">$2</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/productlist-(.+)-(.+)-([0-9]+)\.html$</span> <span class="variable">$1</span>/plugin.php?id=it618_scoremall:scoremall_list&amp;<span class="variable">$2</span>=<span class="variable">$3</span>&amp;page=<span class="variable">$4</span>&amp;<span class="variable">$5</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/product-([0-9]+)\.html$</span> <span class="variable">$1</span>/plugin.php?id=it618_scoremall:scoremall_page&amp;pid=<span class="variable">$2</span>&amp;<span class="variable">$3</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/uc-([0-9]+)-([0-9]+)\.html$</span> <span class="variable">$1</span>/plugin.php?id=it618_scoremall:scoremall_uc&amp;cid=<span class="variable">$2</span>&amp;page=<span class="variable">$3</span>&amp;<span class="variable">$4</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/store-(.+)-(.+)-([0-9]+)-([0-9]+)-([0-9]+)\.html$</span> <span class="variable">$1</span>/plugin.php?id=it618_scoremall:scoremall_store&amp;<span class="variable">$2</span>=<span class="variable">$3</span>&amp;cid=<span class="variable">$4</span>&amp;pid=<span class="variable">$5</span>&amp;page=<span class="variable">$6</span>&amp;<span class="variable">$7</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/storelist-([0-9]+)\.html$</span> <span class="variable">$1</span>/plugin.php?id=it618_scoremall:store_list&amp;page=<span class="variable">$2</span>&amp;<span class="variable">$3</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/scoremall_wap\.html$</span> <span class="variable">$1</span>/plugin.php?id=it618_scoremall:wap&amp;<span class="variable">$2</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/scoremall_wap-(.+)-([0-9]+)-([0-9]+)\.html$</span> <span class="variable">$1</span>/plugin.php?id=it618_scoremall:wap&amp;pagetype=<span class="variable">$2</span>&amp;cid=<span class="variable">$3</span>&amp;page=<span class="variable">$4</span>&amp;<span class="variable">$5</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/topic-(.+)\.html$</span> <span class="variable">$1</span>/portal.php?mod=topic&amp;topic=<span class="variable">$2</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/article-([0-9]+)-([0-9]+)\.html$</span> <span class="variable">$1</span>/portal.php?mod=view&amp;aid=<span class="variable">$2</span>&amp;page=<span class="variable">$3</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/forum-(\w+)-([0-9]+)\.html$</span> <span class="variable">$1</span>/forum.php?mod=forumdisplay&amp;fid=<span class="variable">$2</span>&amp;page=<span class="variable">$3</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/thread-([0-9]+)-([0-9]+)-([0-9]+)\.html$</span> <span class="variable">$1</span>/forum.php?mod=viewthread&amp;tid=<span class="variable">$2</span>&amp;extra=page%3D<span class="variable">$4</span>&amp;page=<span class="variable">$3</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/group-([0-9]+)-([0-9]+)\.html$</span> <span class="variable">$1</span>/forum.php?mod=group&amp;fid=<span class="variable">$2</span>&amp;page=<span class="variable">$3</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/space-(username|uid)-(.+)\.html$</span> <span class="variable">$1</span>/home.php?mod=space&amp;<span class="variable">$2</span>=<span class="variable">$3</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/([a-z]+)-(.+)\.html$</span> <span class="variable">$1</span>/<span class="variable">$2</span>.php?rewrite=<span class="variable">$3</span> <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/youhui.html$</span> <span class="variable">$1</span>/plugin.php?id=ljm_coupon <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^([^\.]*)/([a-z]+[a-z0-9_]*)-([a-z0-9_\-]+)\.html$</span> <span class="variable">$1</span>/plugin.php?id=<span class="variable">$2</span>:<span class="variable">$3</span> <span class="literal">last</span>;</span><br><span class="line"><span class="comment">#判断手机版进行的一些操作</span></span><br><span class="line"><span class="attribute">if</span> ( <span class="variable">$http_user_agent</span> <span class="regexp">~ "(MIDP)|(WAP)|(UP.Browser)|(Smartphone)|(Obigo)|(Mobile)|(AU.Browser)|(wxd.Mms)|(WxdB.Browser)|(CLDC)|(UP.Link)|(KM.Browser)|(UCWEB)|(SEMC-Browser)|(Mini)|(Symbian)|(Palm)|(Nokia)|(Panasonic)|(MOT-)|(SonyEricsson)|(NEC-)|(Alcatel)|(Ericsson)|(BENQ)|(BenQ)|(Amoisonic)|(Amoi-)|(Capitel)|(PHILIPS)|(SAMSUNG)|(Lenovo)|(Mitsu)|(Motorola)|(SHARP)|(WAPPER)|(LG-)|(LG/)|(EG900)|(CECT)|(Compal)|(kejian)|(Bird)|(BIRD)|(G900/V1.0)|(Arima)|(CTL)|(TDG)|(Daxian)|(DAXIAN)|(DBTEL)|(Eastcom)|(EASTCOM)|(PANTECH)|(Dopod)|(Haier)|(HAIER)|(KONKA)|(KEJIAN)|(LENOVO)|(Soutec)|(SOUTEC)|(SAGEM)|(SEC-)|(SED-)|(EMOL-)|(INNO55)|(ZTE)|(iPhone)|(Android)|(Windows</span> CE)|(Wget)|(Java)|(curl)|(Opera)<span class="string">" )</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    #rewrite ^([^\.]*)/$ /forum.php?mod=guide&amp;view=newthread&amp;mobile=2 last;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">if (!-e <span class="variable">$request_filename</span>) &#123;</span></span><br><span class="line"><span class="string">        return 404;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>另外一个网站的配置<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">        <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">        <span class="attribute">server_name</span> www.haotoufa.com haotoufa.com;</span><br><span class="line">        <span class="attribute">if</span> (<span class="variable">$host</span> = <span class="string">'haotoufa.com'</span>)&#123;</span><br><span class="line">                <span class="attribute">rewrite</span><span class="regexp"> ^/(.*)$</span> http://www.haotoufa.com/<span class="variable">$1</span> <span class="literal">permanent</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="attribute">index</span> index.html index.htm index.php;</span><br><span class="line">        <span class="attribute">root</span> /home/wwwroot/haotoufa;</span><br><span class="line">	<span class="attribute">error_page</span> <span class="number">404</span> /<span class="number">404</span>.html;</span><br><span class="line">        <span class="attribute">location</span> <span class="regexp">~ .*\.(php|php5)?$</span></span><br><span class="line"><span class="regexp"></span>        &#123;</span><br><span class="line">                <span class="attribute">fastcgi_pass</span> unix:/tmp/php-cgi.sock;</span><br><span class="line">                <span class="comment">#fastcgi_pass 127.0.0.1:9000;</span></span><br><span class="line">                <span class="attribute">fastcgi_index</span> index.php;</span><br><span class="line">                <span class="attribute">include</span> fastcgi.conf;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="attribute">location</span> <span class="regexp">~ .*\.(gif|jpg|jpeg|png|bmp|swf)$</span></span><br><span class="line"><span class="regexp"></span>        &#123;</span><br><span class="line">                <span class="attribute">expires</span> <span class="number">30d</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="attribute">location</span> <span class="regexp">~ .*\.(js|css)?$</span></span><br><span class="line"><span class="regexp"></span>        &#123;</span><br><span class="line">                <span class="attribute">expires</span> <span class="number">1h</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="attribute">include</span> /usr/local/nginx/conf/discuzx.conf;</span><br><span class="line">        <span class="attribute">log_format</span> haotoufa <span class="string">'<span class="variable">$remote_addr</span> - <span class="variable">$remote_user</span> [<span class="variable">$time_local</span>] "<span class="variable">$request</span>"'</span></span><br><span class="line">                <span class="string">'<span class="variable">$status</span> <span class="variable">$body_bytes_sent</span> "<span class="variable">$http_referer</span>"'</span></span><br><span class="line">                <span class="string">'"<span class="variable">$http_user_agent</span>" "<span class="variable">$http_x_forwarded_for</span>"'</span>;</span><br><span class="line">        <span class="attribute">access_log</span> /home/wwwlogs/access.log haotoufa;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/03/13/discuz-ngixn配置/">discuz_ngixn配置</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">wenqing</a></p>
+        <p><span>发布时间:</span>2017-03-13, 14:06:41</p>
+        <p><span>最后更新:</span>2018-08-27, 14:51:25</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/13/discuz-ngixn配置/" title="discuz_ngixn配置">http://yoursite.com/2017/03/13/discuz-ngixn配置/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/03/13/discuz-ngixn配置/　　作者: wenqing" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/03/13/正则的使用/">
+                    正则的使用
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/03/13/正则基础总结/">
+                    正则基础总结
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"discuz_ngixn配置　| 文清博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/03/13/正则的使用/" title="上一篇: 正则的使用">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/03/13/正则基础总结/" title="下一篇: 正则基础总结">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/08/27/apt流程/">apt流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/17/导读/">导读</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/16/leplus部署/">虚拟机配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/16/linux学习总结/">linux学习总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/15/php测试/">php版本测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/07/laravel核心/">laravel核心</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/linux常用/">linux常用命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/php面试题/">php面试zol</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/php面试总结答案篇/">php</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/17/nginx/">ngixn配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/17/lnmp优化/">lnmp优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/07/lnmp编译安装步骤/">lnmp的编译安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/php常用函数/">php常用函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/php设计模式/">php设计模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/laravel/">laravel核心概念</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/php中的几个概念/">php中的几个概念</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/php魔术函数/">php魔术方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/HTTP协议/">http协议</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/websocket协议/">websocket协议</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/help_function/">help_function</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/自动加载/">自动加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/14/xss和csrf/">xss和csrf</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/14/sql注入/">sql注入</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/正则的使用/">正则的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/discuz-ngixn配置/">discuz_ngixn配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/正则基础总结/">正则基础总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/session总结/">session总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/cookie总结/">cookie总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/前段自动化介绍和安装/">前段自动化介绍和安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/supervisor使用/">supervisor使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/手机web开发注意/">手机web开发注意</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/lnmp安装配置相关/">lnmp安装配置相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/前段自动化/">前段自动化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/16/虚拟机配置/">虚拟机配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/13/php相关/">php相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/数据库优化/">数据库优化</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 wenqing
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

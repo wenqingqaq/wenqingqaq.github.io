@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="wenqing" />
+
+
+
+<meta name="description" content="总结了一下session的一些基础使用，同时添加一些实现代码，方便自己查看">
+<meta name="keywords" content="php session">
+<meta property="og:type" content="article">
+<meta property="og:title" content="session总结">
+<meta property="og:url" content="http://yoursite.com/2017/03/09/session总结/index.html">
+<meta property="og:site_name" content="文清博客">
+<meta property="og:description" content="总结了一下session的一些基础使用，同时添加一些实现代码，方便自己查看">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-27T06:51:25.367Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="session总结">
+<meta name="twitter:description" content="总结了一下session的一些基础使用，同时添加一些实现代码，方便自己查看">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="文清博客" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>session总结 | 文清博客</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">wenqing</a></h1>
+        </hgroup>
+
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/laravel核心概念/">laravel核心概念</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lepus/">lepus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lnmp/">lnmp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lnmp优化/">lnmp优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx-discuz/">nginx discuz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-cookie/">php cookie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-php版本/">php php版本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-session/">php session</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/supervisor/">supervisor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-前段/">web 前段</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/websocket/">websocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前段/">前段</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安全/">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/导读-记忆/">导读 记忆</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/正则/">正则</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/版本测试/">版本测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟机/">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于前端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">wenqing</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">wenqing</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-session总结" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/03/09/session总结/" class="article-date">
+      <time datetime="2017-03-09T06:58:18.000Z" itemprop="datePublished">2017-03-09</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      session总结
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php-session/">php session</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>总结了一下session的一些基础使用，同时添加一些实现代码，方便自己查看<br><a id="more"></a></p>
+<h3 id="开启session"><a href="#开启session" class="headerlink" title="开启session"></a>开启session</h3><pre>
+session_start; //之前不能有任何输出语句
+$_SESSION['username'] = 'wenqing'; //c:/windows/temp/下产生文件
+
+session的请求中请求头信息有一个Cookie:PHPSESSIONID=xxxx;保存的session_id,这个是唯一编号，可以通过编号查找session文件  
+session的键名只能是字符串，否则会设置失败$_SESSION['test'] = 'test'; //新版本的php中已经支持了int类型session
+</pre>
+
+<p>session_name() //获取当前session的名称<br>session_id() //获取当前session的唯一id值</p>
+<h3 id="把session保存到cookie中"><a href="#把session保存到cookie中" class="headerlink" title="把session保存到cookie中"></a>把session保存到cookie中</h3><pre>
+setcookie(session_name(),session_id(),time()+3600);
+</pre>
+
+<h3 id="清空session"><a href="#清空session" class="headerlink" title="清空session"></a>清空session</h3><pre>
+session_destory(); //清空所有的session
+setcookie(session_name(),session_id(),time()-1);
+</pre>
+
+<h3 id="禁用cookie后session还可以使用吗"><a href="#禁用cookie后session还可以使用吗" class="headerlink" title="禁用cookie后session还可以使用吗?"></a>禁用cookie后session还可以使用吗?</h3><pre>
+session_only_cookies = 1 //设置是否仅能通过cookie传递sessionid，还可以通过url传递，所以禁用cookie，session还是可以使用的
+session_gc_maxlifetime = 1440 //多少s后，保存数据视为垃圾自动回收
+</pre>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"dump.php?&lt;?php echo session_name();?&gt;=&lt;?php echo session_id();?&gt;"</span>&gt;</span>跳转输出session<span class="tag">&lt;/<span class="name">a</span>&gt;</span> //url传递session_id</span><br></pre></td></tr></table></figure>
+<pre>
+session_id($_GET[session_name()]); //session_id() 获取或设置会话id
+session_start();
+var_dump($_SESSION);
+</pre>
+
+<h3 id="session说明"><a href="#session说明" class="headerlink" title="session说明"></a>session说明</h3><p>当您运行一个应用程序时，您会打开它，做些更改，然后关闭它。这很像一次会话。计算机清楚你是谁。它知道你何时启动应用程序，并在何时终止。  但是在因特网上，存在一个问题：服务器不知道你是谁以及你做什么，这是由于 HTTP 地址不能维持状态。<br>通过在服务器上存储用户信息以便随后使用，PHP session 解决了这个问题（比如用户名称、购买商品等）。不过，会话信息是临时的，<br>在用户离开网站后将被删除。如果您需要永久储存信息，可以把数据存储在数据库中。<br>Session 的工作机制是：为每个访问者创建一个唯一的 id (UID)，并基于这个 UID 来存储变量。UID 存储在 cookie 中，  亦或通过 URL 进行传导。</p>
+<h3 id="自定义session处理器"><a href="#自定义session处理器" class="headerlink" title="自定义session处理器"></a>自定义session处理器</h3><p>由于默认的session保存在files中，这样无论是存取速度或者占用空间都是不太合适的，所以一般使用mysql或者缓存(redis，memcache进行存储)</p>
+<pre>
+session.save_handler = files
+</pre>
+
+<p>下面是简单的实现以下session自定义mysql的方式<br> <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">ini_set(<span class="string">"session.save_handler"</span>,<span class="string">'user'</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">open</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"&lt;h1&gt;call open&lt;/h1&gt;"</span>;</span><br><span class="line">	$link=mysql_connect(<span class="string">"127.0.0.1"</span>,<span class="string">'root'</span>,<span class="string">'root'</span>) <span class="keyword">or</span> <span class="keyword">die</span>(<span class="string">'connect error'</span>);</span><br><span class="line">	mysql_set_charset(<span class="string">'utf8'</span>);</span><br><span class="line">	mysql_select_db(<span class="string">'test'</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">close</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"&lt;h1&gt;call close.&lt;/h1&gt;"</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">read</span><span class="params">($session_id)</span></span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"&lt;h1&gt;call read&lt;/h1&gt;"</span>;</span><br><span class="line">	$sql=<span class="string">"SELECT session_data FROM sessions WHERE session_id='&#123;$session_id&#125;'"</span>;</span><br><span class="line">	$result=mysql_query($sql);</span><br><span class="line">	<span class="keyword">if</span>($result &amp;&amp; mysql_num_rows($result)&gt;<span class="number">0</span>)&#123;</span><br><span class="line">		$row=mysql_fetch_assoc($result);</span><br><span class="line">		<span class="keyword">return</span> $row[<span class="string">'session_data'</span>];</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">write</span><span class="params">($session_id,$session_data)</span></span>&#123;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"&lt;h1&gt; call write &lt;/h1&gt;"</span>;</span><br><span class="line">	$lifetime=get_cfg_var(<span class="string">"session.gc_maxlifetime"</span>);</span><br><span class="line">	$session_update_time=time()+$lifetime;</span><br><span class="line">	$sql=<span class="string">"INSERT sessions VALUES('&#123;$session_id&#125;','&#123;$session_data&#125;',&#123;$session_update_time&#125;)"</span>;</span><br><span class="line">	$result=mysql_query($sql);</span><br><span class="line">	<span class="keyword">if</span>(!$result)&#123;</span><br><span class="line">		$sql=<span class="string">"UPDATE sessions SET session_data='&#123;$session_data&#125;',session_update_time='&#123;$session_update_time&#125;' WHERE session_id='&#123;$session_id&#125;' AND session_update_time&gt;"</span>.time();</span><br><span class="line">		mysql_query($sql);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">destroy</span><span class="params">($session_id)</span></span>&#123;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"&lt;h1&gt;call destroy&lt;/h1&gt;"</span>;</span><br><span class="line">	$sql=<span class="string">"DELETE FROM sessions WHERE session_id ='&#123;$session_id&#125;'"</span>;</span><br><span class="line">	<span class="keyword">echo</span> $sql;</span><br><span class="line">	<span class="keyword">return</span> mysql_query($sql);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">gc</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"&lt;h1&gt;call gc&lt;/h1&gt;"</span>;</span><br><span class="line">&#125;</span><br><span class="line">session_set_save_handler(<span class="string">'open'</span>, <span class="string">'close'</span>, <span class="string">'read'</span>, <span class="string">'write'</span>, <span class="string">'destroy'</span>, <span class="string">'gc'</span>);</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/03/09/session总结/">session总结</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">wenqing</a></p>
+        <p><span>发布时间:</span>2017-03-09, 14:58:18</p>
+        <p><span>最后更新:</span>2018-08-27, 14:51:25</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/09/session总结/" title="session总结">http://yoursite.com/2017/03/09/session总结/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/03/09/session总结/　　作者: wenqing" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/03/13/正则基础总结/">
+                    正则基础总结
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/03/09/cookie总结/">
+                    cookie总结
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#开启session"><span class="toc-number">1.</span> <span class="toc-text">开启session</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#把session保存到cookie中"><span class="toc-number">2.</span> <span class="toc-text">把session保存到cookie中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#清空session"><span class="toc-number">3.</span> <span class="toc-text">清空session</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#禁用cookie后session还可以使用吗"><span class="toc-number">4.</span> <span class="toc-text">禁用cookie后session还可以使用吗?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#session说明"><span class="toc-number">5.</span> <span class="toc-text">session说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义session处理器"><span class="toc-number">6.</span> <span class="toc-text">自定义session处理器</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"session总结　| 文清博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/03/13/正则基础总结/" title="上一篇: 正则基础总结">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/03/09/cookie总结/" title="下一篇: cookie总结">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/08/27/apt流程/">apt流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/17/导读/">导读</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/16/leplus部署/">虚拟机配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/16/linux学习总结/">linux学习总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/15/php测试/">php版本测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/07/laravel核心/">laravel核心</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/linux常用/">linux常用命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/php面试题/">php面试zol</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/php面试总结答案篇/">php</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/17/nginx/">ngixn配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/17/lnmp优化/">lnmp优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/07/lnmp编译安装步骤/">lnmp的编译安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/php常用函数/">php常用函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/php设计模式/">php设计模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/laravel/">laravel核心概念</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/php中的几个概念/">php中的几个概念</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/php魔术函数/">php魔术方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/HTTP协议/">http协议</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/websocket协议/">websocket协议</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/help_function/">help_function</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/自动加载/">自动加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/14/xss和csrf/">xss和csrf</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/14/sql注入/">sql注入</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/正则的使用/">正则的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/discuz-ngixn配置/">discuz_ngixn配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/正则基础总结/">正则基础总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/session总结/">session总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/cookie总结/">cookie总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/前段自动化介绍和安装/">前段自动化介绍和安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/supervisor使用/">supervisor使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/手机web开发注意/">手机web开发注意</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/lnmp安装配置相关/">lnmp安装配置相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/前段自动化/">前段自动化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/16/虚拟机配置/">虚拟机配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/13/php相关/">php相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/数据库优化/">数据库优化</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 wenqing
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

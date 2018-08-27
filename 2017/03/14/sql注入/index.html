@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="wenqing" />
+
+
+
+<meta name="description" content="所谓SQL注入，就是通过把SQL命令插入到Web表单递交或输入域名或页面请求的查询字符串，最终达到欺骗服务器执行恶意的SQL命令，比如先前的很多影视网站泄露VIP会员密码大多就是通过WEB表单递交查询字符暴出的，这类表单特别容易受到SQL注入式攻击">
+<meta name="keywords" content="安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sql注入">
+<meta property="og:url" content="http://yoursite.com/2017/03/14/sql注入/index.html">
+<meta property="og:site_name" content="文清博客">
+<meta property="og:description" content="所谓SQL注入，就是通过把SQL命令插入到Web表单递交或输入域名或页面请求的查询字符串，最终达到欺骗服务器执行恶意的SQL命令，比如先前的很多影视网站泄露VIP会员密码大多就是通过WEB表单递交查询字符暴出的，这类表单特别容易受到SQL注入式攻击">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-27T06:51:25.368Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="sql注入">
+<meta name="twitter:description" content="所谓SQL注入，就是通过把SQL命令插入到Web表单递交或输入域名或页面请求的查询字符串，最终达到欺骗服务器执行恶意的SQL命令，比如先前的很多影视网站泄露VIP会员密码大多就是通过WEB表单递交查询字符暴出的，这类表单特别容易受到SQL注入式攻击">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="文清博客" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>sql注入 | 文清博客</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">wenqing</a></h1>
+        </hgroup>
+
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/laravel核心概念/">laravel核心概念</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lepus/">lepus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lnmp/">lnmp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lnmp优化/">lnmp优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx-discuz/">nginx discuz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-cookie/">php cookie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-php版本/">php php版本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-session/">php session</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/supervisor/">supervisor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-前段/">web 前段</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/websocket/">websocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前段/">前段</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安全/">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/导读-记忆/">导读 记忆</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/正则/">正则</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/版本测试/">版本测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟机/">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于前端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">wenqing</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">wenqing</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-sql注入" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/03/14/sql注入/" class="article-date">
+      <time datetime="2017-03-14T01:57:03.000Z" itemprop="datePublished">2017-03-14</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      sql注入
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>所谓SQL注入，就是通过把SQL命令插入到Web表单递交或输入域名或页面请求的查询字符串，最终达到欺骗服务器执行恶意的SQL命令，比如先前的很多影视网站泄露VIP会员密码大多就是通过WEB表单递交查询字符暴出的，这类表单特别容易受到SQL注入式攻击<br><a id="more"></a></p>
+<h3 id="初步注入–绕过验证，直接登录"><a href="#初步注入–绕过验证，直接登录" class="headerlink" title="初步注入–绕过验证，直接登录"></a>初步注入–绕过验证，直接登录</h3><p>绕过前段js验证，一般在form表单中输入 ‘or 1=1 ‘，这样会出现直接请求成功的数据<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">From</span> <span class="keyword">Table</span> <span class="keyword">WHERE</span> <span class="keyword">Name</span>=<span class="string">'XX'</span> <span class="keyword">and</span> <span class="keyword">Password</span>=<span class="string">'YY'</span> <span class="keyword">and</span> Corp=<span class="string">'ZZ'</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="中级注入–借助异常获取信息"><a href="#中级注入–借助异常获取信息" class="headerlink" title="中级注入–借助异常获取信息"></a>中级注入–借助异常获取信息</h3><p>输入框中直接输入 “or 1=(SELECT @@version) –”,这是会报错，但是会显示出报错的信息<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">From</span> <span class="keyword">Table</span> <span class="keyword">WHERE</span> <span class="keyword">Name</span>=<span class="string">'SQL inject'</span> <span class="keyword">and</span> <span class="keyword">Password</span>=<span class="string">''</span> <span class="keyword">and</span> Corp=<span class="string">''</span> <span class="keyword">or</span> <span class="number">1</span>=(<span class="keyword">SELECT</span> @@<span class="keyword">VERSION</span>)<span class="comment">--';</span></span><br><span class="line">判断条件变成了 <span class="number">1</span>=(<span class="keyword">SELECT</span> @@<span class="keyword">VERSION</span>),这个写法肯定会导致错误，但出错正是我们想要的。点击登录后，页面出现以下信息：</span><br><span class="line"></span><br><span class="line">Conversion <span class="keyword">failed</span> <span class="keyword">when</span> converting the <span class="keyword">nvarchar</span> <span class="keyword">value</span> <span class="string">'Microsoft SQL Server 2008 (SP3) - 10.0.5500.0 (X64) Sep 21 2011 22:45:45 Copyright (c) </span></span><br><span class="line"><span class="string">1988-2008 Microsoft Corporation Developer Edition (64-bit) on Windows NT 6.1 &lt;X64&gt; (Build 7601: Service Pack 1) '</span> <span class="keyword">to</span> <span class="keyword">data</span> <span class="keyword">type</span> int.</span><br><span class="line">可怕的事情出现了，服务器的操作系统和<span class="keyword">SQL</span> <span class="keyword">Server</span>版本信息竟然通过错误显示出来。</span><br></pre></td></tr></table></figure></p>
+<h3 id="危害扩大–获取服务器所有的库名、表名、字段名"><a href="#危害扩大–获取服务器所有的库名、表名、字段名" class="headerlink" title="危害扩大–获取服务器所有的库名、表名、字段名"></a>危害扩大–获取服务器所有的库名、表名、字段名</h3><p>接着，我们在输入框中输入如下信息：“t’ or 1=(SELECT top 1 name FROM master..sysdatabases where name not in (SELECT top 0 name FROM master..sysdatabases))–”，此时发现第三个输入框有字数长度的限制，然而这种客户端的限制形同虚设，直接通过Google浏览器就能修改前段的js或者html代码了。<br>点击登录，返回的信息如下：</p>
+<p>Conversion failed when converting the nvarchar value ‘master’ to data type int.<br>数据库名称“master”通过异常被显示出来！依次改变上面SQL语句中的序号，就能得到服务器上所有数据库的名称。</p>
+<p>接着，输入信息如下：“b’ or 1=(SELECT top 1 name FROM master..sysobjects where xtype=’U’ and name not in (SELECT top 1 name FROM master..sysobjects where xtype=’U’))–”</p>
+<p>得到返回信息如下：</p>
+<p>Conversion failed when converting the nvarchar value ‘spt_fallback_db’ to data type int.<br>我们得到了master数据库中的第一张表名：“spt_fallback_db”，同上，依次改变序号，可得到该库全部表名。</p>
+<p>现在我们以“spt_fallback_db”表为例，尝试获取该表中所有的字段名。在输入框中输入以下代码：“b’ or 1=(SELECT top 1 master..syscolumns.name FROM master..syscolumns, master..sysobjects WHERE master..syscolumns.id=master..sysobjects.id AND master..sysobjects.name=’spt_fallback_db’);”</p>
+<p>于是，得到错误提示如下：</p>
+<p>“Conversion failed when converting the nvarchar value ‘xserver_name’ to data type int.”;<br>这样第一个字段名“xserver_name”就出来了，依次改变序号，就能遍历出所有的字段名。</p>
+<h3 id="最终目的–获取数据库中的数据"><a href="#最终目的–获取数据库中的数据" class="headerlink" title="最终目的–获取数据库中的数据"></a>最终目的–获取数据库中的数据</h3><p>写到这里，我们已知通过SQL注入能获取全部的数据库，表，及其字段，为了防止本文完全沦为注入教程，获取数据的代码就不再描述，而这篇文章的目的也已达到，SQL注入意味着什么？意味着数据库中所有数据都能被盗取。</p>
+<p>当知道这个危害以后，是否还能有人对SQL注入漏洞置之不理？</p>
+<h3 id="如何防范sql注入"><a href="#如何防范sql注入" class="headerlink" title="如何防范sql注入"></a>如何防范sql注入</h3><p>对于服务器配置层面的防范，应该保证生产环境的Webserver是关闭错误信息的，比如PHP在生产环境的配置文件php.ini中的display_errors应该设置为Off，这样就关闭了错误提示，下面我们更多的从编码的角度来看看如何防范SQL注入。</p>
+<p>上面用两个实例分析了SQL注入攻击的技巧，可以看到，但凡有SQL注入漏洞的程序，都是因为程序要接受来自客户端用户输入的变量或URL传递的参数，并且这个变量或参数是组成SQL语句的一部分，对于用户输入的内容或传递的参数，我们应该要时刻保持警惕，这是安全领域里的「外部数据不可信任」的原则，纵观Web安全领域的各种攻击方式，大多数都是因为开发者违反了这个原则而导致的，所以自然能想到的，就是从变量的检测、过滤、验证下手，确保变量是开发者所预想的。</p>
+<ol>
+<li>检查变量数据类型和格式<br>如果你的SQL语句是类似where id={$id}这种形式，数据库里所有的id都是数字，那么就应该在SQL被执行前，检查确保变量id是int类型；如果是接受邮箱，那就应该检查并严格确保变量一定是邮箱的格式，其他的类型比如日期、时间等也是一个道理。总结起来：<strong>只要是有固定格式的变量，在SQL语句执行前，应该严格按照固定格式去检查，确保变量是我们预想的格式，这样很大程度上可以避免SQL注入攻击</strong>。<br>比如，我们前面接受username参数例子中，我们的产品设计应该是在用户注册的一开始，就有一个用户名的规则，比如5-20个字符，只能由大小写字母、数字以及一些安全的符号组成，不包含特殊字符。此时我们应该有一个check_username的函数来进行统一的检查。不过，仍然有很多例外情况并不能应用到这一准则，比如文章发布系统，评论系统等必须要允许用户提交任意字符串的场景，这就需要采用过滤等其他方案了。</li>
+<li>过滤特殊符号<br>对于无法确定固定格式的变量，一定要进行特殊符号过滤或转义处理。以PHP为例，通常是采用addslashes函数，它会在指定的预定义字符前添加反斜杠转义，这些预定义的字符是：单引号 (‘) 双引号 (“) 反斜杠 () NULL。<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$uid = <span class="keyword">isset</span>($_GET[<span class="string">'uid'</span>]) ? $_GET[<span class="string">'uid'</span>] : <span class="number">0</span>;</span><br><span class="line">$uid = addslashes(uid);</span><br><span class="line">$sql = <span class="string">"SELECT uid,username FROM user WHERE uid='&#123;$uid&#125;'"</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$uid = <span class="keyword">isset</span>($_GET[<span class="string">'uid'</span>]) ? $_GET[<span class="string">'uid'</span>] : <span class="number">0</span>;</span><br><span class="line">$uid = addslashes(uid);</span><br><span class="line">$sql = <span class="string">"SELECT uid,username FROM user WHERE uid=&#123;$uid&#125;"</span>;</span><br></pre></td></tr></table></figure>
+<p>上面两个查询语句都经过了php的addslashes函数过滤转义，但在安全性上却大不相同，在MySQL中，对于int类型字段的条件查询，上面个语句的查询效果完全一样，由于第一句SQL的变量被单引号包含起来，SQL注入的时候，黑客面临的首要问题是必须要先闭合前面的单引号，这样才能使后面的语句作为SQL执行，并且还要注释掉原SQL语句中的后面的单引号，这样才可以成功注入，由于代码里使用了addslashes函数，黑客的攻击会无从下手，但第二句没有用引号包含变量，那黑客也不用考虑去闭合、注释，所以即便同样采用addslashes转义，也还是存在SQL攻击漏洞。<br>从上面可以看出，第二个SQL语句是有漏洞的，不过由于使用了addslashes函数，你会发现黑客的攻击语句也存在不能使用特殊符号的条件限制，类似where username=’plhwin’这样的攻击语句是没法执行的，但是黑客可以将字符串转为16进制编码数据或使用char函数进行转化，同样能达到相同的目的</p>
+<ol start="3">
+<li>绑定变量，使用预编译语句<br>MySQL的mysqli驱动提供了预编译语句的支持，不同的程序语言，都分别有使用预编译语句的方法，我们这里仍然以PHP为例，编写userinfo2.php代码：<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">header(<span class="string">'Content-type:text/html; charset=UTF-8'</span>);</span><br><span class="line">$username = <span class="keyword">isset</span>($_GET[<span class="string">'username'</span>]) ? $_GET[<span class="string">'username'</span>] : <span class="string">''</span>;</span><br><span class="line">$userinfo = <span class="keyword">array</span>();</span><br><span class="line"><span class="keyword">if</span>($username)&#123;</span><br><span class="line">	<span class="comment">//使用mysqli驱动连接demo数据库</span></span><br><span class="line">	$mysqli = <span class="keyword">new</span> mysqli(<span class="string">"localhost"</span>, <span class="string">"root"</span>, <span class="string">"root"</span>, <span class="string">'demo'</span>);</span><br><span class="line">	<span class="comment">//使用问号替代变量位置</span></span><br><span class="line">	$sql = <span class="string">"SELECT uid,username FROM user WHERE username=?"</span>;</span><br><span class="line">	$stmt = $mysqli-&gt;prepare($sql);</span><br><span class="line">	<span class="comment">//绑定变量</span></span><br><span class="line">	$stmt-&gt;bind_param(<span class="string">"s"</span>, $username);</span><br><span class="line">	$stmt-&gt;execute();</span><br><span class="line">	$stmt-&gt;bind_result($uid, $username);</span><br><span class="line">	<span class="keyword">while</span> ($stmt-&gt;fetch()) &#123;</span><br><span class="line">	    $row = <span class="keyword">array</span>();</span><br><span class="line">	    $row[<span class="string">'uid'</span>] = $uid;</span><br><span class="line">	    $row[<span class="string">'username'</span>] = $username;</span><br><span class="line">	    $userinfo[] = $row;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">'&lt;pre&gt;'</span>,print_r($userinfo, <span class="number">1</span>),<span class="string">'&lt;/pre&gt;'</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>从上面的代码可以看到，我们程序里并没有使用addslashes函数，但是浏览器里运行 <a href="http://localhost/test/userinfo2.php?username=plhwin&#39;" target="_blank" rel="noopener">http://localhost/test/userinfo2.php?username=plhwin&#39;</a> AND 1=1– hack里得不到任何结果，说明SQL漏洞在这个程序里并不存在。</p>
+<p>实际上，绑定变量使用预编译语句是预防SQL注入的最佳方式，使用预编译的SQL语句语义不会发生改变，在SQL语句中，变量用问号?表示，黑客即使本事再大，也无法改变SQL语句的结构，像上面例子中，username变量传递的plhwin’ AND 1=1– hack参数，也只会当作username字符串来解释查询，从根本上杜绝了SQL注入攻击的发生。</p>
+<h3 id="数据库信息加密"><a href="#数据库信息加密" class="headerlink" title="数据库信息加密"></a>数据库信息加密</h3><p>相信大家都还对2011年爆出的CSDN拖库事件记忆犹新，这件事情导致CSDN处在风口浪尖被大家痛骂的原因就在于他们竟然明文存储用户的密码，这引发了科技界对用户信息安全尤其是密码安全的强烈关注，我们在防范SQL注入的发生的同时，也应该未雨绸缪，说不定下一个被拖库的就是你，谁知道呢。</p>
+<p>在Web开发中，传统的加解密大致可以分为三种:</p>
+<p>1、对称加密：即加密方和解密方都使用相同的加密算法和密钥，这种方案的密钥的保存非常关键，因为算法是公开的，而密钥是保密的，一旦密匙泄露，黑客仍然可以轻易解密。常见的对称加密算法有：AES、DES等。</p>
+<p>2、非对称加密：即使用不同的密钥来进行加解密，密钥被分为公钥和私钥，用私钥加密的数据必须使用公钥来解密，同样用公钥加密的数据必须用对应的私钥来解密，常见的非对称加密算法有：RSA等。</p>
+<p>3、不可逆加密：利用哈希算法使数据加密之后无法解密回原数据，这样的哈希算法常用的有：md5、SHA-1等。</p>
+<p>在我们上面登录系统的示例代码中，$md5password = md5($password);从这句代码可以看到采用了md5的不可逆加密算法来存储密码，这也是多年来业界常用的密码加密算法，但是这仍然不安全。为什么呢？</p>
+<p>这是因为md5加密有一个特点：同样的字符串经过md5哈希计算之后生成的加密字符串也是相同的，由于业界采用这种加密的方式由来已久，黑客们也准备了自己强大的md5彩虹表来逆向匹配加密前的字符串，这种用于逆向反推MD5加密的彩虹表在互联网上随处可见，在Google里使用md5 解密作为关键词搜索，一下就能找到md5在线破解网站，把我们插入用户数据时候的MD5加密字符串e10adc3949ba59abbe56e057f20f883e填入进去，瞬间就能得到加密前的密码：123456。当然也并不是每一个都能成功，但可以肯定的是，这个彩虹表会越来越完善。</p>
+<p>所以，我们有迫切的需求采用更好的方法对密码数据进行不可逆加密，通常的做法是为每个用户确定不同的密码加盐（salt）后，再混合用户的真实密码进行md5加密，如以下代码：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//用户注册时候设置的password</span></span><br><span class="line">$password = $_POST[<span class="string">'password'</span>];</span><br><span class="line"><span class="comment">//md5加密，传统做法直接将加密后的字符串存入数据库，但这不够，我们继续改良</span></span><br><span class="line">$passwordmd5 = md5($password);</span><br><span class="line"><span class="comment">//为用户生成不同的密码盐，算法可以根据自己业务的需要而不同</span></span><br><span class="line">$salt = substr(uniqid(rand()), <span class="number">-6</span>);</span><br><span class="line"><span class="comment">//新的加密字符串包含了密码盐</span></span><br><span class="line">$passwordmd5 = md5($passwordmd5.$salt);</span><br></pre></td></tr></table></figure></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>关于安全性，本文可总结出一下几点：</p>
+<ol>
+<li>对用户输入的内容要时刻保持警惕。</li>
+<li>数据库连接注意权限的设置，做好数据库帐号权限管理</li>
+<li>永远不要把服务器错误信息暴露给用户</li>
+<li>SQL注入不仅能通过输入框，还能通过Url达到目的。</li>
+<li>漏洞跟语言平台无关，并非php有注入漏洞，一切要看设计者是否用心。</li>
+<li>不要把机密信息明文存放，请加密或者hash掉密码和敏感的信息</li>
+<li>不要随意开启生产环境中Webserver的错误显示。</li>
+<li>严格加密机密信息。</li>
+</ol>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/03/14/sql注入/">sql注入</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">wenqing</a></p>
+        <p><span>发布时间:</span>2017-03-14, 09:57:03</p>
+        <p><span>最后更新:</span>2018-08-27, 14:51:25</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/14/sql注入/" title="sql注入">http://yoursite.com/2017/03/14/sql注入/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/03/14/sql注入/　　作者: wenqing" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/03/14/xss和csrf/">
+                    xss和csrf
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/03/13/正则的使用/">
+                    正则的使用
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#初步注入–绕过验证，直接登录"><span class="toc-number">1.</span> <span class="toc-text">初步注入–绕过验证，直接登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#中级注入–借助异常获取信息"><span class="toc-number">2.</span> <span class="toc-text">中级注入–借助异常获取信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#危害扩大–获取服务器所有的库名、表名、字段名"><span class="toc-number">3.</span> <span class="toc-text">危害扩大–获取服务器所有的库名、表名、字段名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最终目的–获取数据库中的数据"><span class="toc-number">4.</span> <span class="toc-text">最终目的–获取数据库中的数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何防范sql注入"><span class="toc-number">5.</span> <span class="toc-text">如何防范sql注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据库信息加密"><span class="toc-number">6.</span> <span class="toc-text">数据库信息加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"sql注入　| 文清博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/03/14/xss和csrf/" title="上一篇: xss和csrf">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/03/13/正则的使用/" title="下一篇: 正则的使用">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/08/27/apt流程/">apt流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/17/导读/">导读</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/16/leplus部署/">虚拟机配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/16/linux学习总结/">linux学习总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/15/php测试/">php版本测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/07/laravel核心/">laravel核心</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/linux常用/">linux常用命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/php面试题/">php面试zol</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/20/php面试总结答案篇/">php</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/17/nginx/">ngixn配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/17/lnmp优化/">lnmp优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/07/lnmp编译安装步骤/">lnmp的编译安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/php常用函数/">php常用函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/php设计模式/">php设计模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/laravel/">laravel核心概念</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/php中的几个概念/">php中的几个概念</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/php魔术函数/">php魔术方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/HTTP协议/">http协议</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/websocket协议/">websocket协议</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/help_function/">help_function</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/自动加载/">自动加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/14/xss和csrf/">xss和csrf</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/14/sql注入/">sql注入</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/正则的使用/">正则的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/discuz-ngixn配置/">discuz_ngixn配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/正则基础总结/">正则基础总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/session总结/">session总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/cookie总结/">cookie总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/前段自动化介绍和安装/">前段自动化介绍和安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/supervisor使用/">supervisor使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/手机web开发注意/">手机web开发注意</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/lnmp安装配置相关/">lnmp安装配置相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/前段自动化/">前段自动化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/16/虚拟机配置/">虚拟机配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/13/php相关/">php相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/数据库优化/">数据库优化</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 wenqing
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
