@@ -260,10 +260,10 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-lnmp优化" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-nginx" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/04/17/lnmp优化/" class="article-date">
+      <a href="/2017/04/17/nginx/" class="article-date">
       <time datetime="2017-04-17T06:06:41.000Z" itemprop="datePublished">2017-04-17</time>
 </a>
 
@@ -279,7 +279,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/17/lnmp优化/">lnmp优化</a>
+      <a class="article-title" href="/2017/04/17/nginx/">ngixn配置</a>
     </h1>
   
 
@@ -289,7 +289,7 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <p>记录一下lnmp优化的配置<br>
+              <p>记录一下nginx的配置，自己使用<br>
           
       
     </div>
@@ -300,12 +300,12 @@
 
       
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lnmp优化/">lnmp优化</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/">nginx</a></li></ul>
     </div>
 
       
         <p class="article-more-link">
-          <a href="/2017/04/17/lnmp优化/#more">阅读全文 >></a>
+          <a href="/2017/04/17/nginx/#more">阅读全文 >></a>
         </p>
       
       <div class="clearfix"></div>
@@ -582,10 +582,10 @@
 
 
   
-    <article id="post-php中的几个概念" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-自动加载" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/03/17/php中的几个概念/" class="article-date">
+      <a href="/2017/03/17/自动加载/" class="article-date">
       <time datetime="2017-03-17T06:49:59.000Z" itemprop="datePublished">2017-03-17</time>
 </a>
 
@@ -601,7 +601,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/17/php中的几个概念/">php中的几个概念</a>
+      <a class="article-title" href="/2017/03/17/自动加载/">自动加载</a>
     </h1>
   
 
@@ -611,8 +611,9 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <p>描述一下php中的几个概念，cgi,fastcgi,cli,isapi,apache<br>
-          
+        <h3 id="spl-autoload-register"><a href="#spl-autoload-register" class="headerlink" title="spl_autoload_register"></a>spl_autoload_register</h3><p>spl_autoload_register 函数的功能是注册 自动加载类的函数<br>spl_autoload_register 可以多次执行，被注册的函数将形成一个队列逐个执行，直至加载到或最终失败<br>spl_autoload_register 的第三个参数决定了被注册函数在队列中的位置，从而决定了执行的次序<br>这就是说：可以控制最后注册的函数被首先执行，这样你就有了用新模块替换掉旧模块的机会<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">spl_autoload_register(function ($class)&#123;</span><br><span class="line">    include $class.&apos;.php&apos;;</span><br><span class="line">&#125;);</span><br><span class="line">function autoload($class)</span><br><span class="line">&#123;</span><br><span class="line">    include &apos;./&apos;.$class.&apos;.php&apos;;</span><br><span class="line">&#125;</span><br><span class="line">spl_autoload_register(&apos;autoload&apos;,true,true);</span><br><span class="line">$class = new Test();</span><br><span class="line">$class-&gt;index();</span><br><span class="line"></span><br><span class="line">$A = new A();</span><br><span class="line">$A-&gt;index();</span><br><span class="line">$B = new B();</span><br><span class="line">$B-&gt;index();</span><br></pre></td></tr></table></figure></p>
+<h3 id="autoload"><a href="#autoload" class="headerlink" title="__autoload"></a>__autoload</h3><p>我们在加载类文件时，所有的判断条件就都要写在一个<strong>autoload，这样的话，我们系统中的</strong>autoload函数将会比较复杂。而spl_autoload_register可以多次调用，</p>
+
       
     </div>
     
@@ -625,74 +626,6 @@
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
     </div>
 
-      
-        <p class="article-more-link">
-          <a href="/2017/03/17/php中的几个概念/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-php魔术函数" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/03/17/php魔术函数/" class="article-date">
-      <time datetime="2017-03-17T06:49:59.000Z" itemprop="datePublished">2017-03-17</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/17/php魔术函数/">php魔术方法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>简绍一下php的魔术变量，这些是php的一些经常容易忽略的东西<br>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/03/17/php魔术函数/#more">阅读全文 >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -820,6 +753,70 @@
       
         <p class="article-more-link">
           <a href="/2017/03/17/websocket协议/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-php魔术函数" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/03/17/php魔术函数/" class="article-date">
+      <time datetime="2017-03-17T06:49:59.000Z" itemprop="datePublished">2017-03-17</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/17/php魔术函数/">php魔术方法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>简绍一下php的魔术变量，这些是php的一些经常容易忽略的东西<br>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/03/17/php魔术函数/#more">阅读全文 >></a>
         </p>
       
       <div class="clearfix"></div>
